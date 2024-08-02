@@ -1,0 +1,48 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Point {
+    int x, y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+public class Main {
+    public static boolean isIntersecting(Point p1, Point q1, Point p2, Point q2) {
+        return (q1.y - p1.y) * (p2.x - p1.x) - (q1.x - p1.x) * (p2.y - p1.y) != 0;
+    }
+
+    public static void checkIntersectionAndWarn(List<List<Point>> flights) {
+        for (int i = 0; i < flights.size(); ++i) {
+            for (int j = i + 1; j < flights.size(); ++j) {
+                if (doesIntersect(flights.get(i), flights.get(j))) {
+                    System.out.println("Warning: Flight " + (i + 1) + " intersects with Flight " + (j + 1) + ". Please change the route.");
+                    return;
+                }
+            }
+        }
+    }
+
+    public static boolean doesIntersect(List<Point> path1, List<Point> path2) {
+        for (int i = 0; i < path1.size() - 1; ++i) {
+            for (int j = 0; j < path2.size() - 1; ++j) {
+                if (isIntersecting(path1.get(i), path1.get(i + 1), path2.get(j), path2.get(j + 1))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        List<List<Point>> flights = new ArrayList<>();
+        flights.add(List.of(new Point(1, 1), new Point(2, 2), new Point(3, 3)));
+        flights.add(List.of(new Point(1, 1), new Point(2, 4), new Point(3, 2)));
+        flights.add(List.of(new Point(1, 1), new Point(4, 2), new Point(3, 4)));
+
+        checkIntersectionAndWarn(flights);
+    }
+}
