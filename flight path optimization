@@ -1,0 +1,73 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Point {
+    int x, y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+public class Main {
+    public static boolean isIntersecting(Point p1, Point q1, Point p2, Point q2) {
+        return (q1.y - p1.y) * (p2.x - p1.x) - (q1.x - p1.x) * (p2.y - p1.y) != 0;
+    }
+
+    public static void checkIntersectionAndWarn(List<List<Point>> flights) {
+        for (int i = 0; i < flights.size(); ++i) {
+            for (int j = i + 1; j < flights.size(); ++j) {
+                if (doesIntersect(flights.get(i), flights.get(j))) {
+                    System.out.println("Warning: Flight " + (i + 1) + " intersects with Flight " + (j + 1) + ". Please change the route.");
+                    return;
+                }
+            }
+        }
+    }
+
+    public static boolean doesIntersect(List<Point> path1, List<Point> path2) {
+        for (int i = 0; i < path1.size() - 1; ++i) {
+            for (int j = 0; j < path2.size() - 1; ++j) {
+                if (isIntersecting(path1.get(i), path1.get(i + 1), path2.get(j), path2.get(j + 1))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        List<List<Point>> flights = new ArrayList<>();
+        flights.add(List.of(new Point(1, 1), new Point(2, 2), new Point(3, 3)));
+        flights.add(List.of(new Point(1, 1), new Point(2, 4), new Point(3, 2)));
+        flights.add(List.of(new Point(1, 1), new Point(4, 2), new Point(3, 4)));
+
+        checkIntersectionAndWarn(flights);
+    }
+}
+
+//Assignment Title: Flight Path Optimization
+Introduction:
+In this assignment, we will explore the concept of plotting flight paths for different flights with the aim of ensuring safety and optimization. The main goal is to prevent flight paths from intersecting to avoid accidents and to optimize the routes for efficient travel.
+Problem Statement:
+Given 3 different sets of coordinates for 'N' different flights starting from the same point of time and place, the task is to draw the flight paths for the individual flights in a way that there is no intersection of flight paths.
+Example:
+Consider the following input:
+Flight 1: (1,1), (2,2), (3,3)
+Flight 2: (1,1), (2,4), (3,2)
+Flight 3: (1,1), (4,2), (3,4)
+Output:
+Draw the path of all flights in which they had traveled.
+Instructions:
+1. Plot the given coordinates for each flight on a graph. The coordinates represent the positions of the flights at different points in time.
+2. Connect the coordinates for each flight in the order they are given to visualize the path of each flight.
+3. Ensure that the flight paths do not intersect with each other, emphasizing the importance of safety and optimization.
+4. Provide a clear and labeled representation of the flight paths to demonstrate the unique routes taken by each flight.
+5. Clear demonstration of non-intersecting flight paths to ensure safety.
+6. Attention to details and accuracy in presenting the flight paths.
+4. Logical and efficient visualization of the routes taken by each flight.
+
+Conclusion:
+//By completing this assignment, we will gain a better understanding of the importance of safe and optimized flight paths. we will also enhance your skills in graph plotting and optimization, crucial for various applications in aviation and transportation.  
+
