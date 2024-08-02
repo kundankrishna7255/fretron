@@ -1,0 +1,121 @@
+import java.util.*;
+
+public class SpecialCastleGame {
+    static final int SIZE = 10;            // Size of the chessboard
+    static char[][] board = new char[SIZE][SIZE];
+    static List<int[]> soldiers = new ArrayList<>();
+    static int[] castlePosition;
+    static List<List<String>> paths = new ArrayList<>();
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+           // Input number of soldiers
+        System.out.print("Enter number of soldiers: ");
+        int numSoldiers = scanner.nextInt();
+        scanner.nextLine();       // Consume newline
+        
+         // Input soldier coordinates
+        for (int i = 0; i < numSoldiers; i++) {
+            System.out.print("Enter coordinates for soldier " + (i + 1) + ": ");
+            String[] coords = scanner.nextLine().split(",");
+            int x = Integer.parseInt(coords[0].trim()) - 1;
+            int y = Integer.parseInt(coords[1].trim()) - 1;
+            soldiers.add(new int[]{x, y});
+            board[x][y] = 'S';            // Marking soldiers on the board
+        }
+
+        // Input castle coordinates
+        System.out.print("Enter the coordinates for your 'special' castle: ");
+        String[] castleCoords = scanner.nextLine().split(",");
+        castlePosition = new int[]{Integer.parseInt(castleCoords[0].trim()) - 1,
+                                  Integer.parseInt(castleCoords[1].trim()) - 1};
+        board[castlePosition[0]][castlePosition[1]] = 'C';        // Marking the castle on the board
+
+        // Find unique paths
+        findPaths(castlePosition[0], castlePosition[1], new ArrayList<>());
+        
+        // Display paths
+        System.out.println("\nThanks. There are " + paths.size() + " unique paths for your 'special_castle':");
+        for (int i = 0; i < paths.size(); i++) {
+            System.out.println("\nPath " + (i + 1) + "\n=======");
+            for (String step : paths.get(i)) {
+                System.out.println(step);
+            }
+        }
+    }
+
+    static void findPaths(int x, int y, List<String> currentPath) {
+        currentPath.add("Start (" + (x + 1) + "," + (y + 1) + ")");
+        
+        // Try killing soldiers in each column to the right of the castle
+        for (int newY = y + 1; newY < SIZE; newY++) {
+            if (board[x][newY] == 'S') {
+                // Kill the soldier
+                board[x][newY] = 0;    // Mark the cell as empty
+                currentPath.add("Kill (" + (x + 1) + "," + (newY + 1) + "). Turn Left");
+
+                      // Jump over soldiers in the same column
+                int nextY = newY;
+                for (int jumpX = x + 1; jumpX < SIZE; jumpX++) {
+                    if (board[jumpX][newY] == 'S') {
+                        continue; // Can't land on a soldier
+                    }
+                    // Jump over the soldiers
+                    currentPath.add("Jump (" + (jumpX + 1) + "," + (newY + 1) + ")");
+                    board[nextY][newY] = 0; // Mark as empty
+                    // Recursive call
+                    findPaths(jumpX, newY, currentPath);
+                }
+
+                // Return to original position after exploring paths
+                board[x][newY] = 'S'; // Restore the soldier
+                currentPath.remove(currentPath.size() - 1);
+            }
+        }
+
+        // Check for home path
+        if (x == castlePosition[0] && y == castlePosition[1]) {
+            currentPath.add("Arrive (" + (castlePosition[0] + 1) + "," + 
+                            (castlePosition[1] + 1) + ")");
+            paths.add(new ArrayList<>(currentPath)); // Save the current path
+        }
+        currentPath.remove(currentPath.size() - 1);
+    }
+}
+
+//Assignment 3: Kill All and Return Home - Chessboard Problem
+
+#Problem Statement:
+we are tasked to manage a chessboard represented as a grid. Soldiers will be placed randomly on the board, and a specialized castle will occupy one of the cells. 
+The specialized castle can move only forward, kill soldiers, and must follow specific rules regarding its movement. 
+our implementation should find all unique paths that the castle can take to return back to its starting position after killing all soldiers.
+
+Approaches:
+1. Chessboard Representation:
+   - Create a 2D array to represent the chessboard where:
+2. User Input:
+   - Prompt the user to input the number of soldiers.
+  3. Movement Constraints:
+   - Define the castle's movement rules:
+     - Can only move down (to the next row).
+     - After killing a soldier, it must turn left (decrease the column index).
+     - If there is a soldier in the same row, the castle can "jump" over it (move to a lower row without killing).
+4. Backtracking Algorithm:
+   - Implement a recursive method to explore possible paths:
+     - When all soldiers are killed,we check if the castle returns to the starting position.
+     - For each possible move, check for soldiers in the current row.
+     - If a soldier is found, "kill" it (remove it from the board) and explore the next possible moves.
+     - Restore the board state after exploring the path (backtrack) to allow for other paths to be evaluated.
+5. Path Recording:
+   - Maintain a list to store the sequence of moves taken in each unique path.
+   - Include:
+     - Start position.
+     - Each kill action with coordinates.
+     - Jump actions and the finishing back at the starting position.
+6. Output the Result:
+   - After exploring all the paths, display the number of unique paths found.
+   - Format the output clearly to list each path with detailed actions taken.
+
+
+Conclusion: This assignment will enhance my understanding of recursion and backtracking algorithms while applying logical problem-solving techniques in programming.
