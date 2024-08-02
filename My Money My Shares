@@ -1,0 +1,124 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class AppleDistribution {
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> appleWeights = new ArrayList<>();
+        
+        // apple weights
+        System.out.println("Enter apple weight in grams (-1 to stop): ");
+        while (true) {
+            int weight = scanner.nextInt();
+            if (weight == -1) break;
+            appleWeights.add(weight);
+        }
+        
+        int totalPaid = 100; // Total amount paid for apples
+        int ramPaid = 50;
+        int shamPaid = 30;
+        int rahimPaid = 20;
+        
+        double ramShare = (double) ramPaid / totalPaid;
+        double shamShare = (double) shamPaid / totalPaid;
+        double rahimShare = (double) rahimPaid / totalPaid;
+        
+        List<Integer> ramApples = new ArrayList<>();
+        List<Integer> shamApples = new ArrayList<>();
+        List<Integer> rahimApples = new ArrayList<>();
+        
+        // Total weights distributed
+        double ramWeight = 0;
+        double shamWeight = 0;
+        double rahimWeight = 0;
+
+        // Distributing apples based on their weights
+        for (int weight : appleWeights) {
+            if (ramWeight / (ramWeight + shamWeight + rahimWeight) < ramShare) {
+                ramApples.add(weight);
+                ramWeight += weight;
+            } else if (shamWeight / (ramWeight + shamWeight + rahimWeight) < shamShare) {
+                shamApples.add(weight);
+                shamWeight += weight;
+            } else {
+                rahimApples.add(weight);
+                rahimWeight += weight;
+            }
+        }
+
+        // Displaying the distribution result
+        System.out.println("Distribution Result:");
+        System.out.print("Ram: ");
+        for (int weight : ramApples) {
+            System.out.print(weight + " ");
+        }
+        System.out.println();
+        
+        System.out.print("Sham: ");
+        for (int weight : shamApples) {
+            System.out.print(weight + " ");
+        }
+        System.out.println();
+        
+        System.out.print("Rahim: ");
+        for (int weight : rahimApples) {
+            System.out.print(weight + " ");
+        }
+        
+        scanner.close();
+    }
+}
+
+
+
+//Title: Apple Distribution Based on Payment Proportions
+Objective:
+The goal of this assignment is to write a program that distributes apples among three participants (Ram, Sham, and Rahim) in a way that their respective quantities of apples are proportionate to the amounts they paid for the total purchase.
+
+Problem Statement:
+Ram, Sham, and Rahim went apple shopping. They bought apples worth a total of 100 rupees. The contributions were as follows:
+
+Ram paid 50 rupees
+Sham paid 30 rupees
+Rahim paid 20 rupees
+Each apple is tagged with its weight in grams, and we are required to distribute the apples without cutting any apple into pieces.
+Example:
+If there are 8 apples with weights as follows:
+400g, 100g, 400g, 300g, 200g, 300g, 100g, 200g, the program should output a distribution similar to:
+Distribution Result:
+Ram: 400g, 400g, 200g (total 1kg, 50%)
+Sham: 300g, 300g (total 600g, 30%)
+Rahim: 200g, 100g, 100g (total 400g, 20%)
+Steps:
+Input Collection:
+Prompt the user to enter the weights of apples until they enter -1.
+Calculate Total Weight:
+
+Sum up the total weight of all apples entered.
+Calculate Each Person's Share:
+
+Determine how much weight each participant should receive based on their contribution:
+Ram: 50% of total weight
+Sham: 30% of total weight
+Rahim: 20% of total weight
+Distributing Apples:
+
+approach:
+1.Import Required Libraries
+2.Initialization
+3.User Input for Apple Weights
+4.Define Payment Data
+5.Calculate Share Ratios
+6.Initialization of Apple Distribution Lists
+7.Weight Tracking
+8.Greedy Apple Distribution
+9.Display the Distribution Results
+Keep track of the total weights currently distributed to each participant.
+Assign apples in a way that ensures participants receive weights closest to their calculated shares.
+Conclusion: understand concepts of proportions, and working with algorithms for distribution problems.
+
+reference:
+google.com
+quora
